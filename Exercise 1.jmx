@@ -74,7 +74,7 @@
                 <stringProp name="Argument.value">&lt;soap:Envelope xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;&#xd;
   &lt;soap:Body&gt;&#xd;
     &lt;GetCityWeatherByZIP xmlns=&quot;http://ws.cdyne.com/WeatherWS/&quot;&gt;&#xd;
-      &lt;ZIP&gt;90210&lt;/ZIP&gt;&#xd;
+      &lt;ZIP&gt;9021000&lt;/ZIP&gt;&#xd;
     &lt;/GetCityWeatherByZIP&gt;&#xd;
   &lt;/soap:Body&gt;&#xd;
 &lt;/soap:Envelope&gt;</stringProp>
@@ -100,7 +100,7 @@
         <hashTree>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Existance of a tag" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="-526927895">&lt;Success&gt;*.&lt;/Success&gt;</stringProp>
+              <stringProp name="1238837495">&lt;Success&gt;</stringProp>
             </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
@@ -108,11 +108,32 @@
             <stringProp name="Assertion.scope">all</stringProp>
           </ResponseAssertion>
           <hashTree/>
-          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
-            <collectionProp name="Asserion.test_strings"/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response data assertion" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1638965697">Beverly Hills</stringProp>
+            </collectionProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
             <intProp name="Assertion.test_type">16</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Code 200" enabled="true">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="49586">200</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">false</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+          </ResponseAssertion>
+          <hashTree/>
+          <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Code 4xx/5xx " enabled="false">
+            <collectionProp name="Asserion.test_strings">
+              <stringProp name="-1098664868">[4-5][0-9][0-9]</stringProp>
+            </collectionProp>
+            <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
+            <boolProp name="Assertion.assume_success">true</boolProp>
+            <intProp name="Assertion.test_type">2</intProp>
+            <stringProp name="Assertion.scope">all</stringProp>
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
