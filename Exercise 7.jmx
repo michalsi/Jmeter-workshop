@@ -148,31 +148,6 @@ catch (Throwable thex) {
           </XPathExtractor>
           <hashTree/>
         </hashTree>
-        <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="ForEach Controller" enabled="false">
-          <stringProp name="ForeachController.inputVal">csvUrl</stringProp>
-          <stringProp name="ForeachController.returnVal">url</stringProp>
-          <boolProp name="ForeachController.useSeparator">true</boolProp>
-        </ForeachController>
-        <hashTree>
-          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="false">
-            <stringProp name="RegexExtractor.useHeaders">as_document</stringProp>
-            <stringProp name="RegexExtractor.refname">regular_URL</stringProp>
-            <stringProp name="RegexExtractor.regex">Regular Expression Extractor</stringProp>
-            <stringProp name="RegexExtractor.template">&lt;a([^&gt;]+)&gt;(.+?)&lt;\/a&gt;</stringProp>
-            <stringProp name="RegexExtractor.default">NOT FOUND</stringProp>
-            <stringProp name="RegexExtractor.match_number">-1</stringProp>
-          </RegexExtractor>
-          <hashTree/>
-          <HtmlExtractor guiclass="HtmlExtractorGui" testclass="HtmlExtractor" testname="CSS/JQuery Extractor" enabled="true">
-            <stringProp name="HtmlExtractor.refname">css_link</stringProp>
-            <stringProp name="HtmlExtractor.expr">a</stringProp>
-            <stringProp name="HtmlExtractor.attribute">href</stringProp>
-            <stringProp name="HtmlExtractor.default">CSS_NOLINK</stringProp>
-            <stringProp name="HtmlExtractor.match_number">-1</stringProp>
-            <stringProp name="HtmlExtractor.extractor_impl"></stringProp>
-          </HtmlExtractor>
-          <hashTree/>
-        </hashTree>
         <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor" enabled="false">
           <stringProp name="filename"></stringProp>
           <stringProp name="parameters"></stringProp>
