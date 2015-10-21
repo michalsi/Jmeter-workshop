@@ -20,8 +20,46 @@
                         <goals>
                             <goal>jmeter</goal>
                         </goals>
+                        <configuration>
+                           <jmeterPlugins>
+                                <plugin>
+                                        <groupId>kg.apc</groupId>
+                                        <artifactId>jmeter-plugins</artifactId>
+                                </plugin>
+                            </jmeterPlugins>
+                          <testFilesIncluded>
+                                <jMeterTestFile>ActiveThreadsOverTimeExample.jmx</jMeterTestFile>
+                          </testFilesIncluded>
+                          <propertiesUser>
+                               <static_threads_count>10</static_threads_count>
+                               <testIterations>5</testIterations>
+                           </propertiesUser>
+    <!--
+       By default, the console output during a jmeter test run is suppressed.
+       We want to display the progress using the listener "Generate Summary Results" 
+       (which periodically prints stats to stdout). Therefore we have to make sure,
+       that the jmeter output is not suppressed.
+    -->
+             <!--             <suppressJMeterOutput>false</suppressJMeterOutput>  
+           --> 
+                              <!--
+        If tests fail (e.g. a http-request running into a timeout), the corresponding maven
+       goal also fails (and subsequent goals aren't executed anymore). We want to create graphs
+       from test-results, no matter if some requests failed or not, so we ignore jmeter failures.
+    -->
+                        <ignoreResultFailures>true</ignoreResultFailures>
+                        <testResultsTimestamp>true</testResultsTimestamp>
+                        <appendResultsTimestamp>true</appendResultsTimestamp>
+                        </configuration>
                     </execution>
                 </executions>
+                <dependencies>
+                        <dependency>
+                            <groupId>kg.apc</groupId>
+                            <artifactId>jmeter-plugins</artifactId>
+                            <version>1.0.0</version>
+                        </dependency>
+                    </dependencies>
             </plugin>
         </plugins>
     </build>
