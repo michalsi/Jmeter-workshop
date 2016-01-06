@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jmeterTestPlan version="1.2" properties="2.7" jmeter="2.12 r1636949">
+<jmeterTestPlan version="1.2" properties="2.8" jmeter="2.13 r1665067">
   <hashTree>
     <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
       <stringProp name="TestPlan.comments"></stringProp>
@@ -42,18 +42,18 @@
         <hashTree/>
         <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
           <collectionProp name="Arguments.arguments">
-            <elementProp name="csv_file_path" elementType="Argument">
-              <stringProp name="Argument.name">csv_file_path</stringProp>
+            <elementProp name="urls_file_path" elementType="Argument">
+              <stringProp name="Argument.name">urls_file_path</stringProp>
               <stringProp name="Argument.value">/Users/michals/Documents/Pracowe/Workshops/Jmeter/urls2.txt</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="number_of_lines_in_csv" elementType="Argument">
-              <stringProp name="Argument.name">number_of_lines_in_csv</stringProp>
+            <elementProp name="number_of_lines_read_in_file" elementType="Argument">
+              <stringProp name="Argument.name">number_of_lines_read_in_file</stringProp>
               <stringProp name="Argument.value">0</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="num_of_requests_to_send" elementType="Argument">
-              <stringProp name="Argument.name">num_of_requests_to_send</stringProp>
+            <elementProp name="number_of_requests_to_send" elementType="Argument">
+              <stringProp name="Argument.name">number_of_requests_to_send</stringProp>
               <stringProp name="Argument.value">5</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
@@ -68,37 +68,53 @@
 import java.io.*;
 import java.util.*;
 
-ArrayList allLines = new ArrayList();     
-
-try {
-    File file = new File(vars.get(&quot;csv_file_path&quot;));
+//
+// Helper methods
+//
+BufferedReader readUrlsFromFile(){
+	//Create a new file - based on path set in JMeter variable
+	File file = new File(vars.get(&quot;urls_file_path&quot;));
 
     if (!file.exists()) {
-        throw new Exception (&quot;ERROR: file &quot; + csvTest + &quot; not found in &quot; + csvDir + &quot; directory.&quot;);
+        throw new Exception (&quot;ERROR: file not found in directory.&quot;);
     }
-
-	BufferedReader bufRdr = new BufferedReader(new FileReader(file));
-	String line = null;
-
-    while((line = bufRdr.readLine()) != null) {
-        allLines.add(line);
-    }
-
-    vars.put(&quot;cnum_of_lines&quot;,Integer.toString(allLines.size())); // for debugging only
-    bufRdr.close();   
-
-    Random rnd = new java.util.Random();
-    int count = Integer.parseInt(vars.get(&quot;num_of_requests_to_send&quot;));
-
-   //Create a set of randomly picked urls 
-    for (i = 0; i&lt;count;i++){
-    	int random = rnd.nextInt(allLines.size());
-    	vars.put(&quot;csvUrl_&quot;+Integer.toString(i+1),allLines.get(random));
-  
-    	vars.put(&quot;random_&quot;+Integer.toString(i),Integer.toString(random)); // for debugging only
-      	}
+    return new BufferedReader(new FileReader(file)); 
 }
 
+ArrayList loadUrlsToArray(BufferedReader bufRdr){
+    ArrayList urls = new ArrayList(); 
+    String line = null;
+    while((line = bufRdr.readLine()) != null) {
+        urls.add(line);
+    	}
+    	//Write number of lines read from the file  - for debugging only
+    vars.put(&quot;number_of_lines_read_in_file&quot;,Integer.toString(urls.size())); 
+    bufRdr.close();   
+    return urls;
+}
+
+createRandomSetOfUrls(ArrayList urls){
+    Random rnd = new java.util.Random();
+    //Get number of requests that we need to generate - from Jmeter variable
+    int count = Integer.parseInt(vars.get(&quot;number_of_requests_to_send&quot;));
+
+    //Create a set of randomly picked urls 
+    for (i = 0; i&lt;count;i++){
+    	int random = rnd.nextInt(urls.size());    	
+    	vars.put(&quot;randomUrl_&quot;+Integer.toString(i+1),urls.get(random));  
+    	vars.put(&quot;random_&quot;+Integer.toString(i),Integer.toString(random)); // for debugging only
+      	}
+	}
+//
+// main block
+//
+try {
+	BufferedReader bufRdr = readUrlsFromFile();
+	
+	ArrayList urlsFromFile = loadUrlsToArray(bufRdr);
+
+ 	createRandomSetOfUrls(urlsFromFile);
+}
 catch (Exception ex) {
     IsSuccess = false; 
     log.error(ex.getMessage());
@@ -116,7 +132,7 @@ catch (Throwable thex) {
         </DebugSampler>
         <hashTree/>
         <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="ForEach Controller" enabled="true">
-          <stringProp name="ForeachController.inputVal">csvUrl</stringProp>
+          <stringProp name="ForeachController.inputVal">randomUrl</stringProp>
           <stringProp name="ForeachController.returnVal">url</stringProp>
           <boolProp name="ForeachController.useSeparator">true</boolProp>
         </ForeachController>
@@ -125,7 +141,7 @@ catch (Throwable thex) {
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
-            <stringProp name="HTTPSampler.domain">w3schools.com</stringProp>
+            <stringProp name="HTTPSampler.domain">www.w3schools.com</stringProp>
             <stringProp name="HTTPSampler.port"></stringProp>
             <stringProp name="HTTPSampler.connect_timeout"></stringProp>
             <stringProp name="HTTPSampler.response_timeout"></stringProp>
