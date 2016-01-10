@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="2.8" jmeter="2.13 r1665067">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan" enabled="true">
+      <stringProp name="TestPlan.comments"></stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">true</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments"/>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <intProp name="LoopController.loops">-1</intProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <longProp name="ThreadGroup.start_time">1438244978000</longProp>
+        <longProp name="ThreadGroup.end_time">1438244978000</longProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <OnceOnlyController guiclass="OnceOnlyControllerGui" testclass="OnceOnlyController" testname="Once Only Controller" enabled="true"/>
+        <hashTree>
+          <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler" enabled="true">
+            <stringProp name="BeanShellSampler.query">import org.apache.jmeter.services.FileServer;
+
+File file = new File(FileServer.getFileServer().getBaseDir()+&quot;ExtractedLinks.txt&quot;); 
+
+if (file.exists()) 
+{ 
+        if (!file.delete()) 
+        { 
+                log.error(&quot;Couldn&apos;t delete file&quot;); 
+        } 
+        else 
+        { 
+                log.info(&quot;Successfully deleted file: &quot; + file.getName()); 
+        } 
+}
+</stringProp>
+            <stringProp name="BeanShellSampler.filename"></stringProp>
+            <stringProp name="BeanShellSampler.parameters"></stringProp>
+            <boolProp name="BeanShellSampler.resetInterpreter">false</boolProp>
+          </BeanShellSampler>
+          <hashTree/>
+        </hashTree>
+        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">w3schools.com</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.concurrentPool">4</stringProp>
+        </ConfigTestElement>
+        <hashTree/>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+          <stringProp name="delimiter">,</stringProp>
+          <stringProp name="fileEncoding"></stringProp>
+          <stringProp name="filename">/Users/michals/Documents/Pracowe/Workshops/Jmeter/urls.txt</stringProp>
+          <boolProp name="quotedData">false</boolProp>
+          <boolProp name="recycle">false</boolProp>
+          <stringProp name="shareMode">shareMode.thread</stringProp>
+          <boolProp name="stopThread">true</boolProp>
+          <stringProp name="variableNames">url</stringProp>
+        </CSVDataSet>
+        <hashTree/>
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__log(${url})}" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">www.w3schools.com</stringProp>
+          <stringProp name="HTTPSampler.port"></stringProp>
+          <stringProp name="HTTPSampler.connect_timeout"></stringProp>
+          <stringProp name="HTTPSampler.response_timeout"></stringProp>
+          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.contentEncoding"></stringProp>
+          <stringProp name="HTTPSampler.path">${url}</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.monitor">false</boolProp>
+          <stringProp name="HTTPSampler.embedded_url_re"></stringProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="XPath Extractor" enabled="false">
+            <stringProp name="XPathExtractor.default">NO_LINK</stringProp>
+            <stringProp name="XPathExtractor.refname">extracted_link</stringProp>
+            <stringProp name="XPathExtractor.xpathQuery">//a/@href</stringProp>
+            <boolProp name="XPathExtractor.validate">false</boolProp>
+            <boolProp name="XPathExtractor.tolerant">true</boolProp>
+            <boolProp name="XPathExtractor.namespace">false</boolProp>
+          </XPathExtractor>
+          <hashTree/>
+          <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor - xpath" enabled="false">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.services.FileServer;
+log.info(&quot;==================================&quot;);
+log.info(&quot;START of BeanShell PostProcessor !&quot;);
+
+
+// Open / create a file
+f = new FileOutputStream(FileServer.getFileServer().getBaseDir()+&quot;ExtractedLinks.txt&quot;, true); 
+
+
+log.info(&quot;File Path: ---&gt; &quot; + FileServer.getFileServer().getBaseDir());
+p = new PrintStream(f); 
+
+
+String firstLink= vars.get(&quot;extracted_link&quot;);
+
+log.info(&quot;First Link: &quot; + firstLink);
+
+if (! firstLink.equals(&quot;NO_LINK&quot;)){
+	int i= 1;
+	String link;
+	boolean link_valid = true;
+	
+	do {
+	link = vars.get(&quot;extracted_link_&quot;+i);
+	//log.info(link);
+	p.println( &quot;extracted_link_&quot; + i + &quot; : &quot; + link );
+	i++;	
+	if(link == null){
+		link_valid = false;
+	}	
+	} while (link_valid);
+}
+
+//for (i=1; i&lt;count+1; i++){
+//	tempUrl = vars.get(&quot;xpathLinks_&quot;+i);
+//	p.println( &quot;xpathLinks_&quot; + i + &quot; : &quot; + tempUrl );
+//	}
+
+// Close File(s)
+p.close();
+f.close();
+log.info(&quot;==================================&quot;);
+log.info(&quot;STOP of BeanShell PostProcessor !&quot;);</stringProp>
+          </BeanShellPostProcessor>
+          <hashTree/>
+          <HtmlExtractor guiclass="HtmlExtractorGui" testclass="HtmlExtractor" testname="CSS/JQuery Extractor" enabled="false">
+            <stringProp name="HtmlExtractor.refname">extracted_link</stringProp>
+            <stringProp name="HtmlExtractor.expr">a</stringProp>
+            <stringProp name="HtmlExtractor.attribute">href</stringProp>
+            <stringProp name="HtmlExtractor.default">NO_LINK</stringProp>
+            <stringProp name="HtmlExtractor.match_number">-1</stringProp>
+            <stringProp name="HtmlExtractor.extractor_impl"></stringProp>
+          </HtmlExtractor>
+          <hashTree/>
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+            <stringProp name="RegexExtractor.useHeaders">as_document</stringProp>
+            <stringProp name="RegexExtractor.refname">extracted_link</stringProp>
+            <stringProp name="RegexExtractor.regex">&lt;a(?: [^&gt;]+)?&gt;((?:(?!&lt;\/?a[ &gt;]).)*)&lt;\/a&gt;</stringProp>
+            <stringProp name="RegexExtractor.template">$1$</stringProp>
+            <stringProp name="RegexExtractor.default"></stringProp>
+            <stringProp name="RegexExtractor.match_number"></stringProp>
+          </RegexExtractor>
+          <hashTree/>
+          <BeanShellPostProcessor guiclass="TestBeanGUI" testclass="BeanShellPostProcessor" testname="BeanShell PostProcessor - Reg Expression" enabled="true">
+            <stringProp name="filename"></stringProp>
+            <stringProp name="parameters"></stringProp>
+            <boolProp name="resetInterpreter">false</boolProp>
+            <stringProp name="script">import org.apache.jmeter.services.FileServer;
+log.info(&quot;==================================&quot;);
+log.info(&quot;START of BeanShell PostProcessor !&quot;);
+
+
+// Open / create a file
+f = new FileOutputStream(FileServer.getFileServer().getBaseDir()+&quot;ExtractedLinks.txt&quot;, true); 
+
+
+log.info(&quot;File Path: ---&gt; &quot; + FileServer.getFileServer().getBaseDir());
+p = new PrintStream(f); 
+
+
+String firstLink= vars.get(&quot;extracted_link&quot;);
+
+log.info(&quot;First Link: &quot; + firstLink);
+
+if (! firstLink.equals(&quot;NO_LINK&quot;)){
+	p.println( &quot;extracted_link_text : &quot; + firstLink );
+}
+
+// Close File(s)
+p.close();
+f.close();
+log.info(&quot;==================================&quot;);
+log.info(&quot;STOP of BeanShell PostProcessor !&quot;);</stringProp>
+          </BeanShellPostProcessor>
+          <hashTree/>
+        </hashTree>
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>true</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <threadCounts>true</threadCounts>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="true">
+          <boolProp name="ResultCollector.error_logging">false</boolProp>
+          <objProp>
+            <name>saveConfig</name>
+            <value class="SampleSaveConfiguration">
+              <time>true</time>
+              <latency>true</latency>
+              <timestamp>true</timestamp>
+              <success>true</success>
+              <label>true</label>
+              <code>true</code>
+              <message>true</message>
+              <threadName>true</threadName>
+              <dataType>true</dataType>
+              <encoding>false</encoding>
+              <assertions>true</assertions>
+              <subresults>true</subresults>
+              <responseData>false</responseData>
+              <samplerData>false</samplerData>
+              <xml>true</xml>
+              <fieldNames>false</fieldNames>
+              <responseHeaders>false</responseHeaders>
+              <requestHeaders>false</requestHeaders>
+              <responseDataOnError>false</responseDataOnError>
+              <saveAssertionResultsFailureMessage>false</saveAssertionResultsFailureMessage>
+              <assertionsResultsToSave>0</assertionsResultsToSave>
+              <bytes>true</bytes>
+              <threadCounts>true</threadCounts>
+            </value>
+          </objProp>
+          <stringProp name="filename"></stringProp>
+        </ResultCollector>
+        <hashTree/>
+        <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
+          <boolProp name="displayJMeterProperties">false</boolProp>
+          <boolProp name="displayJMeterVariables">true</boolProp>
+          <boolProp name="displaySystemProperties">false</boolProp>
+        </DebugSampler>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
