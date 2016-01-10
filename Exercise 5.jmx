@@ -11,6 +11,75 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
+      <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
+        <boolProp name="resetInterpreter">false</boolProp>
+        <stringProp name="parameters"></stringProp>
+        <stringProp name="filename"></stringProp>
+        <stringProp name="script">import java.text.*;
+import java.io.*;
+import java.util.*;
+
+log.info(&quot;START of BeanShell PreProcessor! &quot;);
+//
+// Helper methods
+//
+BufferedReader readUrlsFromFile(){
+	//Create a new file - based on path set in JMeter variable
+	File file = new File(vars.get(&quot;urls_file_path&quot;));
+	
+    if (!file.exists()) {
+        throw new Exception (&quot;ERROR: file not found in directory.&quot;);
+    }
+    log.info(&quot;LOADING The file !&quot;);
+    return new BufferedReader(new FileReader(file)); 
+}
+
+ArrayList loadUrlsToArray(BufferedReader bufRdr){
+    ArrayList urls = new ArrayList(); 
+    String line = null;
+    while((line = bufRdr.readLine()) != null) {
+        urls.add(line);
+    	}
+    	//Write number of lines read from the file  - for debugging only
+    vars.put(&quot;number_of_lines_read_from_file&quot;,Integer.toString(urls.size())); 
+    bufRdr.close();   
+    return urls;
+}
+
+createRandomSetOfUrls(ArrayList urls){
+    Random rnd = new java.util.Random();
+    //Get number of requests that we need to generate - from Jmeter variable
+    int count = Integer.parseInt(vars.get(&quot;number_of_requests_to_send&quot;));
+
+    //Create a set of randomly picked urls 
+    for (i = 0; i&lt;count;i++){
+    		
+	    	int random = rnd.nextInt(urls.size());    
+	    	log.info(&quot;Random in the loop is:&quot; + random);	
+	    	vars.put(&quot;randomUrl_&quot;+Integer.toString(i+1),urls.get(random));  	    	
+	    	vars.put(&quot;random_&quot;+Integer.toString(i),Integer.toString(random)); // for debugging only
+      	}
+	}
+//
+// main block
+//
+try {	
+	BufferedReader bufRdr = readUrlsFromFile();
+	ArrayList urlsFromFile = loadUrlsToArray(bufRdr);
+ 	createRandomSetOfUrls(urlsFromFile); 	
+}
+catch (Exception ex) {
+    IsSuccess = false; 
+    log.error(ex.getMessage());
+    System.err.println(ex.getMessage());
+}
+catch (Throwable thex) {
+    System.err.println(thex.getMessage());
+}
+
+log.info(&quot;STOP of BeanShell PreProcessor! &quot;);</stringProp>
+      </BeanShellPreProcessor>
+      <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group" enabled="true">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
@@ -47,8 +116,8 @@
               <stringProp name="Argument.value">/Users/michals/Documents/Pracowe/Workshops/Jmeter/urls2.txt</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
-            <elementProp name="number_of_lines_read_in_file" elementType="Argument">
-              <stringProp name="Argument.name">number_of_lines_read_in_file</stringProp>
+            <elementProp name="number_of_lines_read_from_file" elementType="Argument">
+              <stringProp name="Argument.name">number_of_lines_read_from_file</stringProp>
               <stringProp name="Argument.value">0</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
@@ -59,71 +128,6 @@
             </elementProp>
           </collectionProp>
         </Arguments>
-        <hashTree/>
-        <BeanShellPreProcessor guiclass="TestBeanGUI" testclass="BeanShellPreProcessor" testname="BeanShell PreProcessor" enabled="true">
-          <boolProp name="resetInterpreter">false</boolProp>
-          <stringProp name="parameters"></stringProp>
-          <stringProp name="filename"></stringProp>
-          <stringProp name="script">import java.text.*;
-import java.io.*;
-import java.util.*;
-
-//
-// Helper methods
-//
-BufferedReader readUrlsFromFile(){
-	//Create a new file - based on path set in JMeter variable
-	File file = new File(vars.get(&quot;urls_file_path&quot;));
-
-    if (!file.exists()) {
-        throw new Exception (&quot;ERROR: file not found in directory.&quot;);
-    }
-    return new BufferedReader(new FileReader(file)); 
-}
-
-ArrayList loadUrlsToArray(BufferedReader bufRdr){
-    ArrayList urls = new ArrayList(); 
-    String line = null;
-    while((line = bufRdr.readLine()) != null) {
-        urls.add(line);
-    	}
-    	//Write number of lines read from the file  - for debugging only
-    vars.put(&quot;number_of_lines_read_in_file&quot;,Integer.toString(urls.size())); 
-    bufRdr.close();   
-    return urls;
-}
-
-createRandomSetOfUrls(ArrayList urls){
-    Random rnd = new java.util.Random();
-    //Get number of requests that we need to generate - from Jmeter variable
-    int count = Integer.parseInt(vars.get(&quot;number_of_requests_to_send&quot;));
-
-    //Create a set of randomly picked urls 
-    for (i = 0; i&lt;count;i++){
-    	int random = rnd.nextInt(urls.size());    	
-    	vars.put(&quot;randomUrl_&quot;+Integer.toString(i+1),urls.get(random));  
-    	vars.put(&quot;random_&quot;+Integer.toString(i),Integer.toString(random)); // for debugging only
-      	}
-	}
-//
-// main block
-//
-try {
-	BufferedReader bufRdr = readUrlsFromFile();
-	
-	ArrayList urlsFromFile = loadUrlsToArray(bufRdr);
-
- 	createRandomSetOfUrls(urlsFromFile);
-}
-catch (Exception ex) {
-    IsSuccess = false; 
-    log.error(ex.getMessage());
-    System.err.println(ex.getMessage());
-}
-catch (Throwable thex) {
-    System.err.println(thex.getMessage());
-}</stringProp>
-        </BeanShellPreProcessor>
         <hashTree/>
         <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="Debug Sampler" enabled="true">
           <boolProp name="displayJMeterProperties">true</boolProp>
@@ -137,7 +141,7 @@ catch (Throwable thex) {
           <boolProp name="ForeachController.useSeparator">true</boolProp>
         </ForeachController>
         <hashTree>
-          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request" enabled="true">
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${__log(${url})}" enabled="true">
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments"/>
             </elementProp>
