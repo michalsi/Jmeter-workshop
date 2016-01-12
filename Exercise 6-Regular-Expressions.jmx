@@ -30,7 +30,8 @@
         <hashTree>
           <BeanShellSampler guiclass="BeanShellSamplerGui" testclass="BeanShellSampler" testname="BeanShell Sampler" enabled="true">
             <stringProp name="BeanShellSampler.query">import org.apache.jmeter.services.FileServer;
-
+log.info(&quot;------------------&quot;);
+log.info(&quot;Deleteing the file&quot;);
 File file = new File(FileServer.getFileServer().getBaseDir()+&quot;ExtractedLinks.txt&quot;); 
 
 if (file.exists()) 
@@ -163,7 +164,16 @@ log.info(&quot;STOP of BeanShell PostProcessor !&quot;);</stringProp>
             <stringProp name="HtmlExtractor.extractor_impl"></stringProp>
           </HtmlExtractor>
           <hashTree/>
-          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor" enabled="true">
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor - internal Links" enabled="true">
+            <stringProp name="RegexExtractor.useHeaders">as_document</stringProp>
+            <stringProp name="RegexExtractor.refname">extracted_link</stringProp>
+            <stringProp name="RegexExtractor.regex">&lt;a href=&quot;/([^&quot;]+)&quot;</stringProp>
+            <stringProp name="RegexExtractor.template">$1$</stringProp>
+            <stringProp name="RegexExtractor.default"></stringProp>
+            <stringProp name="RegexExtractor.match_number">-1</stringProp>
+          </RegexExtractor>
+          <hashTree/>
+          <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Regular Expression Extractor - Link text" enabled="false">
             <stringProp name="RegexExtractor.useHeaders">as_document</stringProp>
             <stringProp name="RegexExtractor.refname">extracted_link</stringProp>
             <stringProp name="RegexExtractor.regex">&lt;a(?: [^&gt;]+)?&gt;((?:(?!&lt;\/?a[ &gt;]).)*)&lt;\/a&gt;</stringProp>
@@ -195,6 +205,9 @@ log.info(&quot;First Link: &quot; + firstLink);
 
 if (! firstLink.equals(&quot;NO_LINK&quot;)){
 	p.println( &quot;extracted_link_text : &quot; + firstLink );
+//TODO: Add saving all links to a file
+// Hint: Use Debug sampler to see available variables
+	
 }
 
 // Close File(s)
